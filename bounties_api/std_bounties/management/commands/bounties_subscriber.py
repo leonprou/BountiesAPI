@@ -3,6 +3,8 @@ import json
 import time
 from django.core.management.base import BaseCommand
 from std_bounties.client import BountyClient
+from analytics.client import BountyStatsClient
+
 from django.conf import settings
 from slackclient import SlackClient
 from bounties.redis_client import redis_client
@@ -18,6 +20,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
             bounty_client = BountyClient()
+            bounty_stats_client = BountyStatsClient()
             sc = SlackClient(settings.SLACK_TOKEN)
 
             while True:
@@ -65,6 +68,8 @@ class Command(BaseCommand):
                         event, str(bounty_id)))
                 if event == 'BountyIssued':
                     bounty_client.issue_bounty(
+                        bounty_id, contract_method_inputs, event_timestamp)
+                    bounty_stats_client.issue_bounty(
                         bounty_id, contract_method_inputs, event_timestamp)
 
                 if event == 'BountyActivated':
