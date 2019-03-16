@@ -18,6 +18,10 @@ issue_bounty_input_keys = [
     'tokenContract',
     'value']
 
+class ActionClient:
+    def receive_message(self, message):
+        data = message['MessageAttributes']
+
 
 class BountyClient:
 

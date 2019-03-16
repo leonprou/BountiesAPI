@@ -7,6 +7,12 @@ from std_bounties.constants import STAGE_CHOICES, DRAFT_STAGE
 from django.core.exceptions import ObjectDoesNotExist
 
 
+class Action(models.Model):
+    name = models.CharField(max_length=128, unique=True)
+    source = models.CharField(max_length=128, unique=True)
+    data = JSONField(null=True)
+
+
 class Category(models.Model):
     name = models.CharField(max_length=128, unique=True)
     normalized_name = models.CharField(max_length=128)
